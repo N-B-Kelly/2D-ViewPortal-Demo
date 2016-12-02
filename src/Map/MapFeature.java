@@ -5,8 +5,13 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Color;
 
 import Map.Tile;
+import Map.Agent;
 
 public class MapFeature {
+    //list of all agents attached to this mapspace, including the current expected mapspace rotation
+    //for those agents, and the position of those agents.
+    //I may have to have a field for mapspace rotation on each agent
+    protected LinkedList<Agent> agents;
     protected Tile[][] t;
 
     //current rotation of feature
@@ -139,7 +144,7 @@ public class MapFeature {
 	    }
     }
     
-    protected  void Fill(Tile tile, Tile[][] t2, int size) {
+    protected void Fill(Tile tile, Tile[][] t2, int size) {
 	for(int x = 0; x < size; x++)
 	    for(int y = 0; y < size; y++) {
 		t2[x][y] = tile;

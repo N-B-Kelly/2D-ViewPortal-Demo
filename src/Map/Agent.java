@@ -3,10 +3,13 @@ package Map;
 import Map.Tile;
 
 public class Agent {
-    MapFeature ct;
-    int x;
-    int y;
-    int los = 5;
+    protected int ID;
+    protected static int NEXT_ID = 0;
+    
+    protected MapFeature ct;
+    protected int x;
+    protected int y;
+    protected int los = 5;
     
     public int X() { return x; }
     public int Y() { return y; }
@@ -17,6 +20,17 @@ public class Agent {
 	this.ct = ct;
 	this.x = x;
 	this.y = y;
+	ID = NEXT_ID;
+	NEXT_ID++;
+    }
+
+    public Agent(int x, int y, MapFeature ct, int los) {
+	this.ct = ct;
+	this.x = x;
+	this.y = y;
+	this.los = los;
+	ID = NEXT_ID;
+	NEXT_ID++;
     }
 
     public void setLOS(int los) {
@@ -28,7 +42,7 @@ public class Agent {
 	this.y = y;
     }
     
-    public void Move(int dx, int dy) {
+    public boolean Move(int dx, int dy) {
 	dx += x;
 	dy += y;
 
@@ -36,6 +50,7 @@ public class Agent {
 	if(t.floor()) {
 	    x = dx;
 	    y = dy;
+	    return true;
 	}
 	else if (t.portal()) {
 	    Portal p = (Portal)t;
@@ -47,12 +62,14 @@ public class Agent {
 	    x = mf.rotX(dx, dy, (4 - ct.Rot()%4));
 	    y = mf.rotY(dx, dy, (4 - ct.Rot()%4));
 	    
-	    System.err.println(ct.Rot());	    
+	    System.err.println(ct.Rot());
+	    return true;
 	}
+	return false;
     }
 
-    float line_offset = 1.00f;
-    float diag_offset = 1.35f;
+    protected float line_offset = 1.00f;
+    protected float diag_offset = 1.35f;
     
     public MapFeature genMap(boolean portal) {
 	MapFeature mf = new MapFeature(2*los + 1, 2*los + 1);
